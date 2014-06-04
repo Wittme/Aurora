@@ -73,6 +73,30 @@
 		new /obj/item/clothing/mask/surgical(src)
 		new /obj/item/clothing/mask/surgical(src)
 
+/obj/item/weapon/storage/box/lastrequest
+	name = "Last Request package"
+	desc = "Hope you're hungry for lead."
+	icon_state = "lastreq"
+	storage_slots = 4
+
+	New()
+		..()
+		new /obj/item/clothing/glasses/sunglasses/blindfold(src)
+		new /obj/item/weapon/lighter/zippo(src)
+		new /obj/item/weapon/storage/fancy/cigarettes/dromedaryco(src)
+		new /obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle(src)
+
+
+/obj/item/weapon/storage/box/transplant
+	name = "Transplant Storage Unit"
+	desc = "Self-Cooling storage unit to keep your organs fresher than the prince of bel-air."
+	icon_state = "transplantbox_closed"
+	storage_slots = 6
+
+	New()
+		..()
+
+
 
 /obj/item/weapon/storage/box/syringes
 	name = "box of syringes"
@@ -419,6 +443,7 @@
 	w_class = 1
 	flags = TABLEPASS
 	slot_flags = SLOT_BELT
+	can_hold = list("/obj/item/weapon/match")
 
 	New()
 		..()
@@ -426,8 +451,9 @@
 			new /obj/item/weapon/match(src)
 
 	attackby(obj/item/weapon/match/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/match) && W.lit == 0)
+		if(istype(W) && !W.lit && !W.burnt)
 			W.lit = 1
+			W.damtype = "burn"
 			W.icon_state = "match_lit"
 			processing_objects.Add(W)
 		W.update_icon()

@@ -10,6 +10,7 @@ var/list/admin_verbs_default = list(
 //	/client/proc/deadchat				/*toggles deadchat on/off*/
 	)
 var/list/admin_verbs_admin = list(
+	/client/proc/alertlevels,
 	/client/proc/cmd_admin_wind,
 	/client/proc/cmd_admin_unwind,
 	/client/proc/player_panel,			/*shows an interface for all players, with links to various panels (old style)*/
@@ -31,7 +32,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_check_contents,	/*displays the contents of an instance*/
 	/datum/admins/proc/access_news_network,	/*allows access of newscasters*/
 	/client/proc/giveruntimelog,		/*allows us to give access to runtime logs to somebody*/
-	/client/proc/getruntimelog,			/*allows us to access runtime logs to somebody*/
 	/client/proc/getserverlog,			/*allows us to fetch server logs (diary) for other days*/
 	/client/proc/jumptocoord,			/*we ghost and jump to a coordinate*/
 	/client/proc/Getmob,				/*teleports a mob to our location*/
@@ -92,6 +92,7 @@ var/list/admin_verbs_fun = list(
 	/client/proc/cmd_admin_dress,
 	/client/proc/cmd_admin_gib_self,
 	/client/proc/drop_bomb,
+        /client/proc/everyone_random,
 	/client/proc/cinematic,
 	/client/proc/one_click_antag,
 	/datum/admins/proc/toggle_aliens,
@@ -105,6 +106,7 @@ var/list/admin_verbs_fun = list(
 	/client/proc/editappear
 	)
 var/list/admin_verbs_dev = list(
+	/client/proc/dsay,
 	/client/proc/togglebuildmodeself,
 	/datum/admins/proc/restart,
 	/datum/admins/proc/delay,
@@ -158,6 +160,7 @@ var/list/admin_verbs_server = list(
 	/client/proc/check_customitem_activity
 	)
 var/list/admin_verbs_debug = list(
+        /client/proc/getruntimelog,                     /*allows us to access runtime logs to somebody*/
 	/client/proc/cmd_admin_list_open_jobs,
 	/client/proc/Debug2,
 	/client/proc/kill_air,
@@ -809,3 +812,27 @@ var/list/admin_verbs_mod = list(
 
 	log_admin("[key_name(usr)] told everyone to man up and deal with it.")
 	message_admins("\blue [key_name_admin(usr)] told everyone to man up and deal with it.", 1)
+
+
+/client/proc/alertlevels()
+	set category = "Admin"
+	set name = "Alert Levels"
+	set desc = "Changing alert levels haven't been easier."
+
+	var/list/L = list(
+		"Green",
+		"Blue",
+		"Red",
+		"Delta",
+	)
+
+	var/input = input("Select the alert level.", "Alert Level", null, null) in L
+	switch(input)
+		if("Green")
+			set_security_level(SEC_LEVEL_GREEN)
+		if("Blue")
+			set_security_level(SEC_LEVEL_BLUE)
+		if("Red")
+			set_security_level(SEC_LEVEL_RED)
+		if("Delta")
+			set_security_level(SEC_LEVEL_DELTA)
